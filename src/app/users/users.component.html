@@ -1,0 +1,167 @@
+<h1><b>Users</b></h1>
+<input type="text" placeholder="search" [(ngModel)]="term">
+<br>
+<div class="adduser">
+
+  <button style="background-color:#2020D4;color:white;" (click)="add()" value="Add User">Add User</button>
+
+</div>
+<br>
+
+<table border="1" id="users">
+  <thead>
+    <tr>
+
+
+      <th width="340" height="30" id="Name">Name</th>
+      <th width="340" id="Email">Email</th>
+      <th width="340">FirstName</th>
+      <th width="340">LastName</th>
+      <th width="340">Roles</th>
+    </tr>
+
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let lstUser of lstUsers | filter:term ; ">
+      <td height="30">{{lstUser.Name}}</td>
+      <td>{{lstUser.Email}}</td>
+      <td>{{lstUser.FirstName}}</td>
+      <td>{{lstUser.LastName}}</td>
+      <td>{{lstUser.Roles}}</td>
+      <td><button style="background-color:#2A2A5F;color:white;" (click)="EditOpen(lstUser.UserID)">Edit</button>
+        <button id="myBtn" (click)="OpenModal(lstUser.UserID)" value="Delete" style="background-color:#2A2A5F;color:white">Delete</button></td>
+
+    </tr>
+
+  </tbody>
+
+</table>
+
+
+<!-- FOR DELETE-------------------------------------------------------------------------------------->
+
+
+<!-- The Modal -->
+<div *ngIf="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close" (click)="myModal=false"> &times;</span>
+      <h2>Delete</h2>
+    </div>
+    <div class="modal-body">
+      <h2>Delete</h2>
+      <h3 id="del">Are you sure wants to Delete?</h3>
+
+    </div>
+    <div class="modal-footer">
+      <h3>
+
+
+
+        <button (click)="delModal=true">OK</button>
+        <button (click)="myModal=false">Cancel</button>
+      </h3>
+    </div>
+  </div>
+
+</div>
+<!-- ------------------------------------------- -->
+<div *ngIf="delModal" class="modal">
+  
+    <!-- Modal content -->
+    
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="close" (click)="delModal=false"> &times;</span>
+        <h2>Delete</h2>
+      </div>
+      <div class="modal-body">
+        <h2>Delete</h2>
+        <h3 id="del">User Deleted Succesfully</h3>
+  
+      </div>
+      <div class="modal-footer">
+        <h3>
+  
+  
+  
+          <button (click)="deleteUser()">OK</button>
+          <button (click)="delModal=false">Cancel</button>
+        </h3>
+      </div>
+    </div>
+  
+  </div>
+
+<!-- For add User ------------------------------------------------------------------------------------------>
+<div *ngIf="openModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close" (click)="openModal=false"> &times;</span>
+      <h2 style="color: white" >{{ getAddUser()}}</h2>
+    </div>
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" novalidate>
+      <div>
+        <div class="form-group">
+          <div class="modal-body">
+            <p>Name
+              <p>
+                <input type id="username"  placeholder="Enter your Name"  formControlName="Name" class="form-control" />
+                <span *ngIf="!signupForm.get('Name').valid && signupForm.get('Name').touched" class="help-block" style="color:red;">please enter a valid name</span>
+                <hr>
+          </div>
+        </div>
+      </div>
+      
+      <p>UserTypeID 
+
+      </p>
+      <select formControlName="UserTypeID">
+          <option value='0' >Select</option>  please select the UserTypeID 
+          <option value="1">ActiveDirectory</option>
+          <option value="2">Local</option>
+          <!-- <span *ngIf="!signupForm.get('UserTypeID').valid &&  " class="help-block" style="color:red;">please select tha UserTypeID</span> -->
+          
+      </select>
+    
+    
+      <p>Email
+        <p>
+          <input type="text" placeholder="Enter your Email" name="Email"  formControlName="Email" class="form-control">
+
+          <span *ngIf="!signupForm.get('Email').valid && signupForm.get('Email').touched" class="help-block" style="color:red;">please enter a valid Email id</span>
+          <hr>
+          <p>FirstName
+            <p>
+              <input type="text" placeholder="Enter your FirstName" name="FirstName"  formControlName="FirstName">
+              <span *ngIf="!signupForm.get('FirstName').valid && signupForm.get('FirstName').touched" class="help-block" style="color:red;">please enter a First Name</span>
+              <hr>
+
+              <p>LastName
+                <p>
+                  <input type="text" placeholder="Enter LastName" name="LastName"  formControlName="LastName">
+                  <span *ngIf="!signupForm.get('LastName').valid && signupForm.get('LastName').touched" class="help-block" style="color:red;">please enter a Last Name</span>
+
+
+                  <hr>
+
+                  <p>Roles </p>
+                  <select formControlName="RoleID"  >
+                      <option value="0">Select</option>           
+                  <option *ngFor="let Role of Roles"  [value]="Role.RoleID" >{{ Role.Roles }}</option>
+                </select>
+                  <br>
+                  <br>
+                  <input type="Submit" [disabled]="!signupForm.valid " (click)="isNew?addUser():editUser()"  style="margin-left:100px; color:white; background-color:blue">
+                 <br>
+                 
+
+    </form>
+
+  </div>
+</div>
